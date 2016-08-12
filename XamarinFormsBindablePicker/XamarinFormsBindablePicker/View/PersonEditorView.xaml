@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:XamarinFormsBindablePicker.Controls;assembly=XamarinFormsBindablePicker"
+             xmlns:view="clr-namespace:XamarinFormsBindablePicker.View;assembly=XamarinFormsBindablePicker"
+             xmlns:converters="clr-namespace:XamarinFormsBindablePicker.Converters;assembly=XamarinFormsBindablePicker"
+             x:Class="XamarinFormsBindablePicker.View.PersonEditorView">
+
+    <ContentPage.BindingContext>
+        <view:PersonEditorViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:SexEnumConverter x:Key="SexEnumConverter" />
+            <Style TargetType="Label">
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+            <Style TargetType="Entry">
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+            <Style TargetType="{x:Type controls:BindablePicker}">
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+        <StackLayout Orientation="Vertical">
+
+            <Label Text="First Name" />
+            <Entry Text="{Binding Path=Person.FirstName, Mode=TwoWay}" Placeholder="First Name" />
+            
+            <Label Text="Last Name" />
+            <Entry Text="{Binding Path=Person.LastName, Mode=TwoWay}" Placeholder="Last Name" />
+
+            <Label Text="Next Vacation Spot" />
+            <controls:BindablePicker
+                ItemsSource="{Binding Path=VacationSpots}"
+                SelectedItem="{Binding Path=Person.NextVacationSpot, Mode=TwoWay}" />
+
+            <Label Text="Sex" />
+            <controls:BindablePicker
+                ItemsSource="{Binding Path=Sexes}"
+                SelectedItem="{Binding Path=Person.Sex, Mode=TwoWay, Converter={StaticResource SexEnumConverter}}" />
+            
+            <Label Text="State" />
+            <controls:BindablePicker
+                ItemsSource="{Binding Path=States}"
+                SelectedItem="{Binding Path=Person.State, Mode=TwoWay}" />
+
+            <Label Text="Country" />
+            <controls:BindablePicker
+                ItemsSource="{Binding Path=Countries}"
+                DisplayMemberPath="Name"
+                SelectedValuePath="Abbreviation"
+                SelectedValue="{Binding Path=Person.Country, Mode=TwoWay}" />
+
+            <Button
+                Command="{Binding Path=RefreshVacationSpots}"
+                Text="Refresh Vacation Spots"
+                HorizontalOptions="Start" />
+
+            <Button
+                Command="{Binding Path=AddOnItemToVacationSpots}"
+                Text="Add One Item to Vacation Spots"
+                HorizontalOptions="Start" />
+            
+            
+        </StackLayout>
+
+</ContentPage>
